@@ -3,6 +3,7 @@
 
 import subprocess
 
+from time import monotonic
 from typing import Final
 from pathlib import Path
 
@@ -12,6 +13,8 @@ for directory in PUZZLES_PATH.iterdir():
     for part in directory.glob("*.go"):
         print(f"{directory.name}-{part.stem}:")
         subprocess.run(["go", "build", part])
+        start = monotonic()
         subprocess.run([f"./{part.stem}"])
+        print("Time spent for all: ", round(monotonic() - start, 5))
         Path(part.stem).unlink()
         print()

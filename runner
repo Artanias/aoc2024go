@@ -1,0 +1,17 @@
+#!/usr/bin/env python3
+
+
+import subprocess
+
+from typing import Final
+from pathlib import Path
+
+
+PUZZLES_PATH: Final[Path] = Path("puzzles/")
+for directory in PUZZLES_PATH.iterdir():
+    for part in directory.glob("*.go"):
+        print(f"{directory.name}-{part.stem}:")
+        subprocess.run(["go", "build", part])
+        subprocess.run([f"./{part.stem}"])
+        Path(part.stem).unlink()
+        print()

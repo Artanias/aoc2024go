@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 
+import argparse
 import subprocess
 
 from time import monotonic
@@ -8,8 +9,18 @@ from typing import Final
 from pathlib import Path
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--day", type=int, required=False)
+parsed_args = parser.parse_args()
+
+
 PUZZLES_PATH: Final[Path] = Path("puzzles/")
-for directory in PUZZLES_PATH.iterdir():
+SEARCH_DIRS: list[Path] = (
+    [PUZZLES_PATH / f"day{parsed_args.day}"]
+    if parsed_args.day
+    else list(PUZZLES_PATH.iterdir())
+)
+for directory in SEARCH_DIRS:
     for part in directory.glob("*.go"):
         print(f"{directory.name}-{part.stem}:")
         subprocess.run(["go", "build", part])

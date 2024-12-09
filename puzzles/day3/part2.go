@@ -10,7 +10,7 @@ import (
 )
 
 
-const exampleFilePath string = "puzzles/day3/example.txt"
+const exampleFilePath string = "puzzles/day3/example2.txt"
 const dataFilePath string = "puzzles/day3/data.txt"
 
 
@@ -41,10 +41,22 @@ func calcMulResults(filePath string) int {
 	totalMulResult := 0
 	content := getFileContent(filePath)
 	lines := strings.Split(content, "\n")
-	pattern := regexp.MustCompile(`mul\((?P<first_number>\d+),(?P<second_number>\d+)\)`)
+	pattern := regexp.MustCompile(`mul\((?P<first_number>\d+),(?P<second_number>\d+)\)|do\(\)|don't\(\)`)
+	enabled := true
 	for i := 0; i < len(lines); i++ {
 		matches := pattern.FindAllStringSubmatch(lines[i], -1)
 		for j := 0; j < len(matches); j++ {
+			if len(matches[j][0]) == 4 {
+				enabled = true
+				continue
+			}
+			if strings.Compare(matches[j][0][:5], "don't") == 0 {
+				enabled = false
+				continue
+			}
+			if !enabled {
+				continue
+			}
 			first_number := stringToNumber(matches[j][1])
 			second_number := stringToNumber(matches[j][2])
 			totalMulResult += first_number * second_number

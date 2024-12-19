@@ -23,9 +23,7 @@ SEARCH_DIRS: list[Path] = (
 for directory in SEARCH_DIRS:
     for part in directory.glob("*.go"):
         print(f"{directory.name}-{part.stem}:")
-        subprocess.run(["go", "build", part])
         start = monotonic()
-        subprocess.run([f"./{part.stem}"])
+        subprocess.run(["go", "run", part])
         print("Time spent for all: ", round(monotonic() - start, 5))
-        Path(part.stem).unlink()
         print()

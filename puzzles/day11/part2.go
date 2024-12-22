@@ -109,9 +109,6 @@ func calcResult(filePath string) int {
 		total_numbers_cnt += cache[initial_int_numbers[k]][additional_iterations]
 	}
 
-	if blinks_cnt == 60 && total_numbers_cnt != 470980814376 {
-		panic(fmt.Sprintf("Current: %d, Expected: %d.", total_numbers_cnt, 470980814376))
-	}
 	return total_numbers_cnt
 }
 

@@ -2,19 +2,16 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
-	"io/ioutil"
-	"strings"
-	"strconv"
 	"slices"
+	"strings"
 )
-
 
 const example1FilePath string = "puzzles/day12/example1.txt"
 const example2FilePath string = "puzzles/day12/example2.txt"
 const example3FilePath string = "puzzles/day12/example3.txt"
 const dataFilePath string = "puzzles/day12/data.txt"
-
 
 func getFileContent(filePath string) string {
 	file, err := os.Open(filePath)
@@ -23,22 +20,11 @@ func getFileContent(filePath string) string {
 	}
 	defer file.Close()
 
-	contents, err := ioutil.ReadAll(file)
+	contents, err := io.ReadAll(file)
 	if err != nil {
 		panic(err)
 	}
 	return strings.Trim(string(contents), "\n")
-}
-
-func stringToNumber(number string) int {
-	if number == "." {
-		return -1
-	}
-	int_number, err := strconv.Atoi(number)
-	if err != nil {
-		panic(err)
-	}
-	return int_number
 }
 
 func calcResult(filePath string) int {
@@ -64,36 +50,36 @@ func calcResult(filePath string) int {
 				j := current_item[1]
 				if (i - 1) < 0 {
 					p += 1
-				} else if lines[i-1][j] == letter && !slices.Contains(fence, [2]int{i-1, j}) {
+				} else if lines[i-1][j] == letter && !slices.Contains(fence, [2]int{i - 1, j}) {
 					area += 1
-					fence = append(fence, [2]int{i-1, j})
+					fence = append(fence, [2]int{i - 1, j})
 					fence_items += 1
 				} else if lines[i-1][j] != letter {
 					p += 1
 				}
 				if (j - 1) < 0 {
 					p += 1
-				} else if lines[i][j-1] == letter && !slices.Contains(fence, [2]int{i, j-1}) {
+				} else if lines[i][j-1] == letter && !slices.Contains(fence, [2]int{i, j - 1}) {
 					area += 1
-					fence = append(fence, [2]int{i, j-1})
+					fence = append(fence, [2]int{i, j - 1})
 					fence_items += 1
 				} else if lines[i][j-1] != letter {
 					p += 1
 				}
 				if (i + 1) == lines_cnt {
 					p += 1
-				} else if lines[i+1][j] == letter && !slices.Contains(fence, [2]int{i+1, j}) {
+				} else if lines[i+1][j] == letter && !slices.Contains(fence, [2]int{i + 1, j}) {
 					area += 1
-					fence = append(fence, [2]int{i+1, j})
+					fence = append(fence, [2]int{i + 1, j})
 					fence_items += 1
 				} else if lines[i+1][j] != letter {
 					p += 1
 				}
 				if (j + 1) == columns_cnt {
 					p += 1
-				} else if lines[i][j+1] == letter && !slices.Contains(fence, [2]int{i, j+1}) {
+				} else if lines[i][j+1] == letter && !slices.Contains(fence, [2]int{i, j + 1}) {
 					area += 1
-					fence = append(fence, [2]int{i, j+1})
+					fence = append(fence, [2]int{i, j + 1})
 					fence_items += 1
 				} else if lines[i][j+1] != letter {
 					p += 1
